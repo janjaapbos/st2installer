@@ -8,6 +8,7 @@ import random
 import string
 import os
 import json
+import pipes
 from st2installer.controllers.base import BaseController
 
 
@@ -321,6 +322,9 @@ class RootController(BaseController):
                     config["hubot::env_export"]["HUBOT_XMPP_HOST"] = kwargs["xmpp-host"]
                 if kwargs["xmpp-port"] != "":
                     config["hubot::env_export"]["HUBOT_XMPP_PORT"] = kwargs["xmpp-port"]
+
+            for key, value in config["hubot::env_export"].iteritems():
+                config["hubot::env_export"][key] = pipes.quote(value)
 
         if not os.path.exists(self.path):
             os.makedirs(self.path)
