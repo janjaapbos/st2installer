@@ -227,8 +227,8 @@ class RootController(BaseController):
             self.gen_ssl = 'Provided'
 
         if kwargs["sshgen"] == "0":
-            config["st2::ssh_public_key"] = request.POST['file-ssh-publickey'].file.read()
-            config["st2::ssh_private_key"] = request.POST['file-ssh-privatekey'].file.read()
+            config["st2::stanley::ssh_private_key"] = request.POST['file-ssh-publickey'].file.read()
+            config["st2::stanley::ssh_public_key"] = request.POST['file-ssh-privatekey'].file.read()
             self.gen_ssh = 'Provided'
         else:
             config["st2::stanley::ssh_private_key"] = kwargs['gen-private']
