@@ -310,7 +310,7 @@ class RootController(BaseController):
                     "HUBOT_HIPCHAT_PASSWORD": kwargs["hipchat-password"]
                 })
                 if kwargs["text-hipchat-domain"] != "":
-                    config["hubot::env_export"]["HUBOT_XMPP_DOMAIN"] = kwargs["text-hipchat-domain"]
+                    config["hubot::env_export"]["HUBOT_HIPCHAT_XMPP_DOMAIN"] = "btf.hipchat.com"
             elif kwargs["chatops"] == "xmpp":
                 config["hubot::adapter"] = "xmpp"
                 config["hubot::env_export"].update({
