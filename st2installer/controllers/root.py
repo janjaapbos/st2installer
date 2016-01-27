@@ -35,6 +35,10 @@ class RootController(BaseController):
         self.gen_ssh = 'Generated'
         self.version = None
 
+        # Flag indicating if debug mode is enabled. If debug mode is enabled,
+        # puppet will run with debug flags
+        self.debug = False
+
         config = config or conf.to_dict()
 
         version = config.get('app', {}).get('version', None)
@@ -107,10 +111,19 @@ class RootController(BaseController):
     def puppet(self, line):
         if not self.proc and self.log_is_empty():
             open(self.output, 'w').close()
-            self.p = Popen("(%s) > %s 2>&1" % (self.st2stop, self.output), shell=True)
-            self.proc = Popen("(%s) > %s 2>&1" % (self.command, self.output), shell=True)
+
             self.lock()
             self.start_time = time.time()
+
+            env = os.environ.copy()
+
+            # If debug mode is enabled, we pass DEBUG env var to the script
+            if self.debug:
+                env['DEBUG'] = 1
+
+            self.p = Popen("(%s) > %s 2>&1" % (self.st2stop, self.output), shell=True)
+            self.proc = Popen("(%s) > %s 2>&1" % (self.command, self.output), shell=True,
+                              env=env)
 
         data = ''
 
@@ -152,6 +165,11 @@ class RootController(BaseController):
 
         if not skip_lock_check:
             self.redirect_check()
+
+        self.debug = self._get_query_param_value(request=request,
+                                                 param_name='debug',
+                                                 param_type='bool',
+                                                 default_value=False)
 
         self.hostname = self.hostname or request.host.split(':')[0]
         return {"hubotpassword": self.password,

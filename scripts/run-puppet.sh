@@ -1,7 +1,10 @@
 #!/usr/bin/env sh
 
-# Note: We enable DEBUG mode by default so we get more useful info
-PUPPET_DEBUG_ARGS="--debug --verbose"
+if [ -n "$DEBUG" ]; then
+    PUPPET_DEBUG_ARGS="--debug --verbose"
+else
+    PUPPET_DEBUG_ARGS=""
+fi
 
 # Command used to invoke puppet run
 COMMAND="/usr/bin/sudo FACTER_installer_running=true ENV=current_working_directory NOCOLOR=true /usr/bin/puprun ${PUPPET_DEBUG_ARGS}"
