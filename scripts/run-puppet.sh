@@ -11,7 +11,7 @@ COMMAND="/usr/bin/sudo FACTER_installer_running=true ENV=current_working_directo
 
 # Note: There is a weird bug with convergence on Ubuntu where some
 # some tasks don't converge on initial puppet run (RBAC definitions,
-# pack resource permissions, etc.)so we run it twice.
+# pack resource permissions, etc.) so we run it twice.
 # Keep in mind that this is an ugly work around because we haven't
 # been able to track down the root cause.
 
