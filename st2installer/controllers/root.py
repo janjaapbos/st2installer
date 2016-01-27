@@ -103,11 +103,15 @@ class RootController(BaseController):
             self.start_time = time.time()
 
         data = ''
-        logfile = open(self.output, 'r')
-        for i, logline in enumerate(logfile):
-            if i >= int(line):
-                data += logline.strip() + '\n'
-        logfile.close()
+
+        try:
+            logfile = open(self.output, 'r')
+
+            for i, logline in enumerate(logfile):
+                if i >= int(line):
+                    data += logline.strip() + '\n'
+        finally:
+            logfile.close()
 
         if self.proc.poll() is not None:
             data += '--terminate--'
