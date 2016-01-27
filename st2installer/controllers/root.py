@@ -10,6 +10,8 @@ import os
 import json
 from st2installer.controllers.base import BaseController
 
+# Command which is used to run puppet
+# TODO: Add support for debug mode and args
 PUPPET_RUN_COMMAND = ('/usr/bin/sudo '
     'FACTER_installer_running=true '
     'ENV=current_working_directory '
@@ -48,12 +50,13 @@ class RootController(BaseController):
             # pack resource permissions, etc.)so we run it twice.
             # Keep in mind that this is an ugly work around because we haven't
             # been able to track down the root cause.
-            self.command = '(%s; %s)' % (PUPPET_RUN_COMMAND, PUPPET_RUN_COMMAND)
+            self.command = '; '.join([PUPPET_RUN_COMMAND, PUPPET_RUN_COMMAND])
         if 'puppet' in config and 'hieradata' in config['puppet']:
             self.path = config['puppet']['hieradata']
         else:
             self.path = "/opt/puppet/hieradata/"
 
+        # TODO: Generate password when needed aka on demand
         password_length = 32
         password_chars = string.ascii_letters + string.digits
         self.password = ''.join([random.choice(password_chars) for n in xrange(password_length)])
@@ -97,8 +100,8 @@ class RootController(BaseController):
     def puppet(self, line):
         if not self.proc:
             open(self.output, 'w').close()
-            self.p = Popen("%s > %s 2>&1" % (self.st2stop, self.output), shell=True)
-            self.proc = Popen("%s > %s 2>&1" % (self.command, self.output), shell=True)
+            self.p = Popen("(%s) > %s 2>&1" % (self.st2stop, self.output), shell=True)
+            self.proc = Popen("(%s) > %s 2>&1" % (self.command, self.output), shell=True)
             self.lock()
             self.start_time = time.time()
 
