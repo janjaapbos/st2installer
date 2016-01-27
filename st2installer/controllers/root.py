@@ -11,13 +11,8 @@ import json
 import pipes
 from st2installer.controllers.base import BaseController
 
-# Command which is used to run puppet
-# TODO: Add support for debug mode and args
-PUPPET_RUN_COMMAND = ('/usr/bin/sudo '
-    'FACTER_installer_running=true '
-    'ENV=current_working_directory '
-    'NOCOLOR=true /usr/bin/puprun')
-
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SCRIPTS_DIR = os.path.abspath(os.path.join(BASE_DIR, '../../scripts'))
 
 class RootController(BaseController):
 
@@ -45,12 +40,7 @@ class RootController(BaseController):
         if 'puppet' in config and 'command' in config['puppet']:
             self.command = config['puppet']['command']
         else:
-            # Note: There is a weird bug with convergence on Ubuntu where some
-            # some tasks don't converge on initial puppet run (RBAC definitions,
-            # pack resource permissions, etc.)so we run it twice.
-            # Keep in mind that this is an ugly work around because we haven't
-            # been able to track down the root cause.
-            self.command = '; '.join([PUPPET_RUN_COMMAND, PUPPET_RUN_COMMAND])
+            self.command = os.path.join(SCRIPTS_DIR, 'run-puppet.sh')
         if 'puppet' in config and 'hieradata' in config['puppet']:
             self.path = config['puppet']['hieradata']
         else:
