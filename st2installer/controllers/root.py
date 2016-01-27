@@ -14,9 +14,10 @@ from st2installer.controllers.base import BaseController
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SCRIPTS_DIR = os.path.abspath(os.path.join(BASE_DIR, '../../scripts'))
 
-class RootController(BaseController):
 
+class RootController(BaseController):
     def __init__(self, config=None):
+        config = config or {}
 
         self.proc = None
         self.st2stop = '/usr/bin/sudo /usr/bin/st2ctl stop'
@@ -35,14 +36,20 @@ class RootController(BaseController):
         self.version = None
 
         config = config or conf.to_dict()
-        if 'app' in config and 'version' in config['app']:
-            self.version = config['app']['version']
-        if 'puppet' in config and 'command' in config['puppet']:
-            self.command = config['puppet']['command']
+
+        version = config.get('app', {}).get('version', None)
+        if version:
+            self.version = version
+
+        puppet_command = config.get('puppet', {}).get('command', None)
+        if puppet_command:
+            self.command = puppet_command
         else:
             self.command = os.path.join(SCRIPTS_DIR, 'run-puppet.sh')
-        if 'puppet' in config and 'hieradata' in config['puppet']:
-            self.path = config['puppet']['hieradata']
+
+        hieradata_path = config.get('puppet', {}).get('hieradata', None)
+        if hieradata_path:
+            self.path = hieradata_path
         else:
             self.path = "/opt/puppet/hieradata/"
 
