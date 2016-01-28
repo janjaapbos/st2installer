@@ -66,7 +66,7 @@ var puppet = {
   warnings: 0,
   line: 0,
   access_errors: 0,
-  interval: 700,
+  interval: 1500,
   url: 'puppet',
   set_progress: function(p) {
     puppet.progress = p;
@@ -156,12 +156,12 @@ var puppet = {
       },
       error: function() {
         puppet.access_errors += 1;
-        if (puppet.access_errors > 10) {
+        if (puppet.access_errors > 5) {
           location.reload(true);
         }
       },
       complete: function(data, status) {
-        if (puppet.progress < 100 && puppet.access_errors <= 10) {
+        if (puppet.progress < 100 && puppet.access_errors <= 5) {
           setTimeout(puppet.read, puppet.interval);
         }
       }
