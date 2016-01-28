@@ -156,12 +156,12 @@ var puppet = {
       },
       error: function() {
         puppet.access_errors += 1;
-        if (puppet.access_errors > 5) {
-          location.reload();
+        if (puppet.access_errors > 10) {
+          location.reload(true);
         }
       },
       complete: function(data, status) {
-        if (puppet.progress < 100) {
+        if (puppet.progress < 100 && puppet.access_errors <= 10) {
           setTimeout(puppet.read, puppet.interval);
         }
       }
