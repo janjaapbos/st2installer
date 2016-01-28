@@ -34,6 +34,8 @@ class RootController(BaseController):
         self.gen_ssl = 'Self-signed'
         self.gen_ssh = 'Generated'
         self.version = None
+        # we only support ssh-rsa key types
+        self.ssh_key_type = 'ssh-rsa'
 
         config = config or conf.to_dict()
 
@@ -245,6 +247,7 @@ class RootController(BaseController):
         else:
             config["st2::stanley::ssh_public_key"] = kwargs['gen-public']
             config["st2::stanley::ssh_private_key"] = kwargs['gen-private']
+            config["st2::stanley::ssh_key_type"] = self.ssh_key_type
 
         if "enterprise" in kwargs and kwargs["enterprise"] != "":
             config["st2enterprise::token"] = kwargs["enterprise"]
