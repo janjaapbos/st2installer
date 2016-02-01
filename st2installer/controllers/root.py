@@ -116,14 +116,11 @@ class RootController(BaseController):
 
         data = ''
 
-        try:
-            logfile = open(self.output, 'r')
-
+        # Todo: This is really inefficient when working with large files
+        with open(self.output, 'r') as logfile:
             for i, logline in enumerate(logfile):
                 if i >= int(line):
                     data += logline.strip() + '\n'
-        finally:
-            logfile.close()
 
         if not self.proc and not self.log_is_empty():
             data += '--terminate--'
