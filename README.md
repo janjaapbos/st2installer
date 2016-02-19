@@ -38,3 +38,13 @@ Now you can access installer at `http://localhost:9090/`. Be aware that it locks
 ## Versioning
 
 The installer is versioned in `config.py` as `X.Y.Z`. It's loosely based on Semantic Versioning, with the notable exception that every UI change—no matter how small—never should be a "patch" (`Z`) increment, minor (or major) only. In every other case follow SemVer and use your best judgement; St2Installer is a critical dependency for most St2 installations, so a proper way of reflecting backwards-incompatible changes is necessary.
+
+## Copyright, License, and Contributors Agreement
+
+Copyright 2015-2016 StackStorm, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the [LICENSE](LICENSE) file, or at:
+
+[http://www.apache.org/licenses/LICENSE-2.0](http://www.apache.org/licenses/LICENSE-2.0)
+
+By contributing you agree that these contributions are your own (or approved by your employer) and you grant a full, complete, irrevocable copyright license to all users and developers of the project, present and future, pursuant to the license of the project.
