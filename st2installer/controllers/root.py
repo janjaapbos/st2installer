@@ -255,6 +255,7 @@ class RootController(BaseController):
                 "hubot::chat_alias": "!",
                 "hubot::env_export": {
                     "HUBOT_LOG_LEVEL": "debug",
+                    "ST2_HOSTNAME": kwargs['hostname'],
                     "ST2_AUTH_USERNAME": "chatops_bot",
                     "ST2_AUTH_PASSWORD": password,
                     "ST2_API": "https://%s:443/api" % kwargs['hostname'],
